@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chouaib × Salma — 04.09.2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --midnight: #0a0a0f; --charcoal: #1a1a24; --slate: #2d2d3d;
+            --pearl: #f5f5f0; --cream: #fafaf8; --white: #ffffff;
+            --champagne: #e8d5b7; --bronze: #c19a6b; --emerald: #2d8659;
+            --rose-gold: #b76e79; --shadow: rgba(10, 10, 15, 0.08);
+        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--midnight); line-height: 1.8; min-height: 100vh; }
+        
+        .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--midnight) 0%, var(--charcoal) 100%); padding: 2rem; }
+        .login-box { background: var(--white); padding: 4rem 3rem; max-width: 500px; width: 100%; text-align: center; }
+        .login-box h1 { font-family: 'Bodoni Moda', serif; font-size: 3.5rem; color: var(--midnight); margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .login-box .divider { width: 60px; height: 2px; background: var(--bronze); margin: 2rem auto; }
+        .login-box input { width: 100%; padding: 1.2rem; border: 2px solid var(--pearl); background: var(--cream); font-size: 1.1rem; text-align: center; font-family: 'DM Sans', sans-serif; margin-bottom: 2rem; transition: all 0.3s; }
+        .login-box input:focus { outline: none; border-color: var(--bronze); }
+        .login-box button { width: 100%; padding: 1.2rem; background: var(--midnight); color: var(--white); border: none; cursor: pointer; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.3s; }
+        .login-box button:hover { background: var(--bronze); }
+        .login-options { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--pearl); }
+        .login-options button { background: transparent; color: var(--slate); border: 1px solid var(--pearl); margin-top: 1rem; }
+        .login-options button:hover { background: var(--pearl); border-color: var(--pearl); color: var(--midnight); }
+        
+        .guest-view { display: none; min-height: 100vh; background: linear-gradient(to bottom, var(--white) 0%, var(--cream) 100%); }
+        .guest-hero { text-align: center; padding: 8rem 2rem; background: var(--white); }
+        .guest-hero h1 { font-family: 'Bodoni Moda', serif; font-size: clamp(3rem, 8vw, 6rem); color: var(--midnight); margin-bottom: 2rem; line-height: 1.1; }
+        .guest-hero .ar { font-family: 'Amiri', serif; font-size: clamp(2rem, 6vw, 4rem); color: var(--emerald); margin: 3rem 0; direction: rtl; }
+        .guest-info { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+        .guest-card { background: var(--white); padding: 4rem 3rem; margin-bottom: 3rem; box-shadow: 0 10px 40px var(--shadow); text-align: center; }
+        .guest-card h2 { font-family: 'Bodoni Moda', serif; font-size: 2.5rem; color: var(--midnight); margin-bottom: 2rem; }
+        .guest-card .ar-text { font-family: 'Amiri', serif; font-size: 2rem; color: var(--emerald); margin: 2rem 0; direction: rtl; }
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 3rem 0; text-align: left; }
+        .info-item { padding: 2rem; background: var(--cream); }
+        .info-item label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--slate); margin-bottom: 1rem; }
+        .info-item .value { font-size: 1.5rem; color: var(--midnight); font-weight: 500; }
+        
+        .admin-view { display: none; }
+        .admin-header { background: var(--midnight); padding: 2rem; text-align: center; color: var(--white); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .admin-header h1 { font-family: 'Bodoni Moda', serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        .admin-badge { display: inline-block; background: var(--bronze); color: var(--white); padding: 0.5rem 1.5rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin: 0.5rem; }
+        .logout-btn { background: var(--rose-gold); color: var(--white); border: none; padding: 0.8rem 2rem; cursor: pointer; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1rem; transition: all 0.3s; }
+        .logout-btn:hover { background: var(--bronze); }
+        
+        .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 0; background: var(--charcoal); position: sticky; top: 7.5rem; z-index: 99; }
+        .tab { padding: 1.2rem 1.8rem; background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.3s; font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--champagne); white-space: nowrap; }
+        .tab:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+        .tab.active { color: var(--white); border-bottom-color: var(--bronze); background: rgba(193, 154, 107, 0.1); }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 5rem 3rem; }
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .section-title { font-family: 'Bodoni Moda', serif; font-size: 3.5rem; font-weight: 400; color: var(--midnight); margin-bottom: 1.5rem; }
+        .section-subtitle { font-size: 1.2rem; color: var(--slate); margin-bottom: 5rem; font-weight: 300; }
+        .card { background: var(--white); padding: 4rem; margin-bottom: 4rem; box-shadow: 0 10px 40px var(--shadow); }
+        h3 { font-family: 'Bodoni Moda', serif; font-size: 2rem; color: var(--midnight); margin: 4rem 0 2rem 0; font-weight: 500; }
+        
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; }
+        
+        .input-group { margin-bottom: 0; }
+        .input-group label { display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-bottom: 1rem; }
+        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 1.2rem; border: 2px solid var(--pearl); background: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 1rem; transition: all 0.3s; color: var(--midnight); }
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus { outline: none; border-color: var(--bronze); background: var(--white); }
+        .input-group textarea { min-height: 180px; resize: vertical; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin: 4rem 0; }
+        .stat-card { background: var(--midnight); padding: 3rem 2rem; text-align: center; }
+        .stat-number { font-family: 'Bodoni Moda', serif; font-size: 4rem; font-weight: 400; color: var(--champagne); line-height: 1; margin-bottom: 1rem; }
+        .stat-label { font-size: 0.75rem; color: var(--bronze); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
+        .progress-bar { width: 100%; height: 4px; background: rgba(193, 154, 107, 0.2); margin-top: 2rem; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--bronze); transition: width 0.8s ease; }
+        
+        .btn { padding: 1.5rem 3rem; background: var(--midnight); color: var(--white); border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.3s; margin-top: 2rem; }
+        .btn:hover { background: var(--bronze); }
+        
+        .budget-widget { position: fixed; bottom: 2rem; right: 2rem; background: var(--midnight); color: var(--white); padding: 2rem; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); min-width: 280px; z-index: 1000; display: none; }
+        .budget-widget.active { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .budget-widget h4 { font-family: 'Bodoni Moda', serif; font-size: 1.2rem; margin-bottom: 1rem; color: var(--champagne); }
+        .budget-widget-amount { font-family: 'Bodoni Moda', serif; font-size: 2.5rem; color: var(--white); margin: 1rem 0; }
+        .budget-widget-label { font-size: 0.75rem; color: var(--bronze); letter-spacing: 0.15em; text-transform: uppercase; }
+        .budget-widget-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--champagne); cursor: pointer; font-size: 1.5rem; }
+        
+        .budget-summary { background: var(--midnight); padding: 5rem 4rem; text-align: center; margin-top: 4rem; color: var(--white); }
+        .budget-summary h3 { color: var(--champagne); margin-top: 0; }
+        .budget-amount { font-family: 'Bodoni Moda', serif; font-size: 5rem; color: var(--white); margin: 2rem 0; }
+        
+        .budget-category-item { background: var(--cream); padding: 2rem; margin-bottom: 1.5rem; border-left: 3px solid var(--bronze); display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: end; transition: all 0.3s ease; }
+        .budget-category-item:hover { background: var(--white); box-shadow: 0 4px 15px var(--shadow); }
+        
+        .custom-category { background: var(--cream); padding: 2rem; margin-bottom: 2rem; display: grid; grid-template-columns: 1fr 1fr 1.5fr auto; gap: 2rem; align-items: end; border-left: 3px solid var(--rose-gold); }
+        
+        .add-guest-form { background: var(--cream); padding: 3rem; margin-bottom: 3rem; border: 2px solid var(--bronze); }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        
+        table { width: 100%; border-collapse: collapse; background: var(--white); margin: 2rem 0; }
+        thead { background: var(--midnight); }
+        th { padding: 1.5rem; text-align: left; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--champagne); }
+        td { padding: 1.5rem; border-bottom: 1px solid var(--pearl); }
+        tbody tr:hover { background: var(--cream); }
+        td input, td select { width: 100%; padding: 0.8rem; border: 1px solid var(--pearl); background: var(--cream); font-family: 'DM Sans', sans-serif; }
+        .delete-btn { background: var(--rose-gold); color: var(--white); border: none; padding: 0.8rem 1.5rem; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.3s; }
+        .delete-btn:hover { background: var(--midnight); }
+        
+        .checklist-item { display: flex; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--pearl); cursor: pointer; }
+        .checklist-item input[type="checkbox"] { width: 24px; height: 24px; margin-right: 2rem; cursor: pointer; accent-color: var(--bronze); }
+        .checklist-item.completed { opacity: 0.4; text-decoration: line-through; }
+        .checklist-add-task { background: var(--cream); padding: 2rem; margin-top: 2rem; border: 2px dashed var(--bronze); display: flex; gap: 1rem; align-items: center; }
+        .checklist-add-task input { flex: 1; padding: 1rem; border: 2px solid var(--pearl); background: var(--white); }
+        .checklist-add-task button { margin: 0; }
+        
+        .timeline { position: relative; padding: 3rem 0 3rem 4rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--bronze); }
+        .timeline-item { padding: 2rem 0 3rem 3rem; position: relative; }
+        .timeline-item::before { content: ''; position: absolute; left: -9px; top: 2.5rem; width: 18px; height: 18px; background: var(--bronze); border-radius: 50%; border: 4px solid var(--cream); }
+        .timeline-month { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; color: var(--midnight); margin-bottom: 1.5rem; }
+        .timeline-item ul { list-style: none; padding: 0; }
+        .timeline-item li { padding: 0.8rem 0; color: var(--slate); padding-left: 2rem; position: relative; }
+        .timeline-item li::before { content: '—'; position: absolute; left: 0; color: var(--bronze); }
+        
+        .honeymoon-summary { background: var(--emerald); padding: 4rem; margin-top: 3rem; text-align: center; color: var(--white); }
+        .honeymoon-total { font-family: 'Bodoni Moda', serif; font-size: 4rem; color: var(--white); margin: 2rem 0; }
+        .ar-blessing { font-family: 'Amiri', serif; font-size: 1.8rem; color: var(--champagne); margin: 2rem 0; direction: rtl; }
+        
+        .log-entry { background: var(--cream); padding: 1.5rem; margin-bottom: 1rem; border-left: 4px solid var(--bronze); }
+        .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .log-admin { font-weight: 600; color: var(--bronze); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; }
+        .log-time { font-size: 0.75rem; color: var(--slate); }
+        .log-action { color: var(--midnight); font-size: 0.95rem; }
+        .logs-container { max-height: 600px; overflow-y: auto; }
+        
+        .chat-container { max-height: 600px; overflow-y: auto; background: var(--cream); padding: 2rem; margin-bottom: 2rem; }
+        .chat-message { background: var(--white); padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; box-shadow: 0 2px 8px var(--shadow); }
+        .chat-message.own { background: var(--bronze); color: var(--white); margin-left: 20%; }
+        .chat-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; }
+        .chat-author { font-weight: 600; color: var(--bronze); }
+        .chat-message.own .chat-author { color: var(--champagne); }
+        .chat-time { font-size: 0.75rem; color: var(--slate); }
+        .chat-message.own .chat-time { color: rgba(255,255,255,0.7); }
+        .chat-text { line-height: 1.6; }
+        .chat-input-area { background: var(--white); padding: 2rem; border-top: 2px solid var(--bronze); }
+        .chat-input-area textarea { width: 100%; padding: 1.2rem; border: 2px solid var(--pearl); background: var(--cream); font-family: 'DM Sans', sans-serif; min-height: 100px; resize: vertical; }
+        .chat-input-area button { margin-top: 1rem; }
+        
+        .master-only { display: none; }
+        .hide-for-yousra { display: block; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 3rem 1.5rem; }
+            .card { padding: 2.5rem; }
+            .section-title { font-size: 2.5rem; }
+            .tabs { flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem; }
+            .tab { padding: 1rem 1.2rem; font-size: 0.7rem; letter-spacing: 0.08em; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .custom-category { grid-template-columns: 1fr; }
+            .budget-category-item { grid-template-columns: 1fr; gap: 1rem; }
+            .info-row { grid-template-columns: 1fr; gap: 2rem; }
+            .budget-widget { bottom: 1rem; right: 1rem; min-width: 240px; padding: 1.5rem; }
+            .chat-message.own { margin-left: 10%; }
+        }
+        
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: var(--pearl); }
+        ::-webkit-scrollbar-thumb { background: var(--bronze); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--midnight); }
+    </style>
+</head>
+<body>
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <h1>Chouaib × Salma</h1>
+            <div class="divider"></div>
+            <p style="color: var(--slate); margin-bottom: 2rem;">04 Septembre 2026</p>
+            <input type="password" id="adminCode" placeholder="Code Admin" maxlength="4">
+            <button onclick="loginAdmin()">Accès Administrateur</button>
+            <div class="login-options">
+                <p style="color: var(--slate); margin-bottom: 1rem;">ou</p>
+                <button onclick="viewAsGuest()">Voir l'Invitation</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="guestView" class="guest-view">
+        <div class="guest-hero">
+            <h1>Vous êtes invités au mariage de<br>Chouaib & Salma</h1>
+            <p class="ar">أنتم مدعوون لحضور زفاف<br>شعيب وسلمى</p>
+        </div>
+        <div class="guest-info">
+            <div class="guest-card">
+                <h2>Détails de la Cérémonie</h2>
+                <p class="ar-text">تفاصيل الحفل</p>
+                <div class="info-row">
+                    <div class="info-item">
+                        <label>Date / التاريخ</label>
+                        <div class="value">04 Septembre 2026</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Lieu / المكان</label>
+                        <div class="value" id="guestCeremonyVenue">À venir</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-item">
+                        <label>Réception / الاستقبال</label>
+                        <div class="value" id="guestReceptionVenue">À venir</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Dress Code</label>
+                        <div class="value">Tenue Élégante</div>
+                    </div>
+                </div>
+                <p class="ar-text" style="margin-top: 3rem;">نتشرف بحضوركم</p>
+                <p style="font-size: 1.2rem; color: var(--slate); margin-top: 1rem;">Nous serions honorés de votre présence</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminView" class="admin-view">
+        <div class="admin-header">
+            <h1>Planificateur de Mariage</h1>
+            <p style="opacity: 0.7;">Chouaib × Salma — 04.09.2026</p>
+            <div class="admin-badge" id="adminBadge">Admin</div>
+            <button class="logout-btn" onclick="logout()">Déconnexion</button>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('overview')">Aperçu</div>
+            <div class="tab" onclick="showTab('budget')">Budget</div>
+            <div class="tab" onclick="showTab('timeline')">Timeline</div>
+            <div class="tab" onclick="showTab('checklist')">Checklist</div>
+            <div class="tab" onclick="showTab('guests')">Invités</div>
+            <div class="tab hide-for-yousra" onclick="showTab('honeymoon1')">Voyage 1</div>
+            <div class="tab hide-for-yousra" onclick="showTab('honeymoon2')">Voyage 2</div>
+            <div class="tab" onclick="showTab('inspiration')">Inspiration</div>
+            <div class="tab" onclick="showTab('discussions')">Discussions</div>
+            <div class="tab master-only" id="logsTab" onclick="showTab('logs')">Historique</div>
+        </div>
+
+        <div class="budget-widget" id="budgetWidget">
+            <button class="budget-widget-close" onclick="closeBudgetWidget()">×</button>
+            <h4>Dépenses Actuelles</h4>
+            <div class="budget-widget-label">Total</div>
+            <div class="budget-widget-amount" id="widgetTotal">0 €</div>
+        </div>
+
+        <div class="container">
+            <div id="overview" class="content-section active">
+                <h2 class="section-title">Vue d'Ensemble</h2>
+                <p class="section-subtitle">Suivez la progression de votre organisation</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="daysLeft">—</div>
+                        <div class="stat-label">Jours Restants</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="taskProgress">0%</div>
+                        <div class="stat-label">Progression</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="guestCount">0</div>
+                        <div class="stat-label">Invités</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="budgetSpent">0€</div>
+                        <div class="stat-label">Budget Utilisé</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Informations Principales</h3>
+                    <div class="grid-3">
+                        <div class="input-group">
+                            <label>Lieu de Cérémonie</label>
+                            <input type="text" id="ceremonyVenue" placeholder="Mosquée, mairie..." onchange="saveData('Lieu cérémonie modifié')">
+                        </div>
+                        <div class="input-group">
+                            <label>Lieu de Réception</label>
+                            <input type="text" id="receptionVenue" placeholder="Salle, jardin..." onchange="saveData('Lieu réception modifié')">
+                        </div>
+                        <div class="input-group">
+                            <label>Nombre d'Invités Estimé</label>
+                            <input type="number" id="estimatedGuests" placeholder="150" onchange="saveData('Nombre invités modifié')">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="budget" class="content-section">
+                <h2 class="section-title">Gestion du Budget</h2>
+                <p class="section-subtitle">Organisez et suivez toutes vos dépenses</p>
+                <div class="card">
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label>Budget Total</label>
+                            <input type="number" id="totalBudget" placeholder="30000" onchange="saveData('Budget total modifié'); updateBudget()">
+                        </div>
+                    </div>
+                    <h3>Catégories Principales</h3>
+                    <div id="mainBudgetCategories"></div>
+                    <h3>Catégories Personnalisées</h3>
+                    <div id="customCategories"></div>
+                    <button class="btn" onclick="addCustomCategory()">+ Ajouter une Catégorie</button>
+                </div>
+                <div class="budget-summary">
+                    <h3>Résumé Financier</h3>
+                    <div style="margin: 2rem 0;">
+                        <div style="color: var(--bronze); font-size: 0.9rem; letter-spacing: 0.2em; margin-bottom: 1rem;">DÉPENSÉ</div>
+                        <div class="budget-amount" id="totalSpent">0 €</div>
+                    </div>
+                    <div style="margin: 2rem 0;">
+                        <div style="color: var(--bronze); font-size: 0.9rem; letter-spacing: 0.2em; margin-bottom: 1rem;">RESTANT</div>
+                        <div class="budget-amount" id="remaining">0 €</div>
+                    </div>
+                    <div class="progress-bar" style="background: rgba(255,255,255,0.2);">
+                        <div class="progress-fill" id="budgetProgress" style="width: 0%; background: var(--champagne);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="timeline" class="content-section">
+                <h2 class="section-title">Timeline</h2>
+                <p class="section-subtitle">Étapes clés jusqu'au grand jour</p>
+                <div class="card">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-month">Mai 2026 (4 mois avant)</div>
+                            <ul>
+                                <li>Finaliser les derniers prestataires</li>
+                                <li>Commander faire-parts</li>
+                                <li>Essayages et retouches tenues</li>
+                                <li>Décoration détaillée</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-month">Juin 2026 (3 mois avant)</div>
+                            <ul>
+                                <li>Envoyer faire-parts</li>
+                                <li>Finaliser menu Halal</li>
+                                <li>Plan de table</li>
+                                <li>Commander cadeaux invités</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-month">Juillet 2026 (2 mois avant)</div>
+                            <ul>
+                                <li>Confirmer tous les prestataires</li>
+                                <li>Finaliser plan de table</li>
+                                <li>Derniers achats</li>
+                                <li>Répétition cérémonie</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-month">Août 2026 (1 mois avant)</div>
+                            <ul>
+                                <li>Derniers essayages</li>
+                                <li>Confirmer nombre final invités</li>
+                                <li>Préparer cérémonie religieuse</li>
+                                <li>Organiser répétition</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-month">Septembre 2026 - Le Grand Jour !</div>
+                            <ul>
+                                <li>Derniers RDV beauté</li>
+                                <li>Préparations finales</li>
+                                <li>Douas et préparation spirituelle</li>
+                                <li>Profiter de chaque instant incha'Allah ! 💍</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="checklist" class="content-section">
+                <h2 class="section-title">Checklist Complète</h2>
+                <p class="section-subtitle">Cochez au fur et à mesure</p>
+                <div class="card">
+                    <h3>Administration</h3>
+                    <div id="checklistAdmin"></div>
+                    <div class="checklist-add-task">
+                        <input type="text" id="newTaskAdmin" placeholder="Nouvelle tâche...">
+                        <button class="btn" onclick="addCustomTask('admin')">+ Ajouter</button>
+                    </div>
+                    <h3>Lieux & Prestataires</h3>
+                    <div id="checklistVenues"></div>
+                    <div class="checklist-add-task">
+                        <input type="text" id="newTaskVenues" placeholder="Nouvelle tâche...">
+                        <button class="btn" onclick="addCustomTask('venues')">+ Ajouter</button>
+                    </div>
+                    <h3>Tenues</h3>
+                    <div id="checklistOutfits"></div>
+                    <div class="checklist-add-task">
+                        <input type="text" id="newTaskOutfits" placeholder="Nouvelle tâche...">
+                        <button class="btn" onclick="addCustomTask('outfits')">+ Ajouter</button>
+                    </div>
+                    <h3>Communication</h3>
+                    <div id="checklistComm"></div>
+                    <div class="checklist-add-task">
+                        <input type="text" id="newTaskComm" placeholder="Nouvelle tâche...">
+                        <button class="btn" onclick="addCustomTask('comm')">+ Ajouter</button>
+                    </div>
+                    <h3>Décoration</h3>
+                    <div id="checklistDeco"></div>
+                    <div class="checklist-add-task">
+                        <input type="text" id="newTaskDeco" placeholder="Nouvelle tâche...">
+                        <button class="btn" onclick="addCustomTask('deco')">+ Ajouter</button>
+                    </div>
+                    <h3>Finitions</h3>
+                    <div id="checklistFinal"></div>
+                    <div class="checklist-add-task">
+                        <input type="text" id="newTaskFinal" placeholder="Nouvelle tâche...">
+                        <button class="btn" onclick="addCustomTask('final')">+ Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="guests" class="content-section">
+                <h2 class="section-title">Gestion des Invités</h2>
+                <p class="section-subtitle">Ajoutez et suivez vos invités facilement</p>
+                <div class="card">
+                    <h3>Formulaire d'Ajout Rapide</h3>
+                    <div class="add-guest-form">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Nom Complet *</label>
+                                <input type="text" id="newGuestName" placeholder="Ahmed Benali">
+                            </div>
+                            <div class="input-group">
+                                <label>Famille</label>
+                                <select id="newGuestSide">
+                                    <option value="Famille Chouaib">Famille Chouaib</option>
+                                    <option value="Famille Salma">Famille Salma</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <input type="email" id="newGuestEmail" placeholder="ahmed@email.com">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Téléphone</label>
+                                <input type="tel" id="newGuestPhone" placeholder="+33 6 12 34 56 78">
+                            </div>
+                            <div class="input-group">
+                                <label>Statut</label>
+                                <select id="newGuestConfirmed">
+                                    <option value="En attente">En attente</option>
+                                    <option value="Confirmé">Confirmé</option>
+                                    <option value="Décliné">Décliné</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Menu</label>
+                                <select id="newGuestMenu">
+                                    <option value="Halal">Halal</option>
+                                    <option value="Végétarien">Végétarien</option>
+                                    <option value="Sans gluten">Sans gluten</option>
+                                    <option value="Autre">Autre</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="addGuestFromForm()">Ajouter l'Invité</button>
+                    </div>
+                    <h3>Liste Complète</h3>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Famille</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                    <th>Statut</th>
+                                    <th>Menu</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guestList"></tbody>
+                        </table>
+                    </div>
+                    <div class="stats-grid" style="margin-top: 4rem;">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalGuests">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="confirmedGuests">0</div>
+                            <div class="stat-label">Confirmés</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="pendingGuests">0</div>
+                            <div class="stat-label">En Attente</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="honeymoon1" class="content-section hide-for-yousra">
+                <h2 class="section-title">Premier Voyage de Noces</h2>
+                <p class="section-subtitle">Planification détaillée de votre première destination</p>
+                <div class="card">
+                    <div class="grid-3">
+                        <div class="input-group">
+                            <label>Destination</label>
+                            <input type="text" id="hm1Destination" placeholder="Istanbul, Turquie" onchange="saveData('Voyage 1 - Destination')">
+                        </div>
+                        <div class="input-group">
+                            <label>Date de Départ</label>
+                            <input type="date" id="hm1StartDate" onchange="saveData('Voyage 1 - Date')">
+                        </div>
+                        <div class="input-group">
+                            <label>Durée (jours)</label>
+                            <input type="number" id="hm1Duration" placeholder="7" onchange="saveData('Voyage 1 - Durée')">
+                        </div>
+                    </div>
+                    <h3>Budget Détaillé</h3>
+                    <div id="hm1BudgetCategories"></div>
+                    <h3>Notes & Idées</h3>
+                    <div class="input-group">
+                        <textarea id="hm1Notes" placeholder="Activités prévues, restaurants à essayer, lieux à visiter..." onchange="saveData('Voyage 1 - Notes')"></textarea>
+                    </div>
+                </div>
+                <div class="honeymoon-summary">
+                    <h3>Budget Total Voyage 1</h3>
+                    <div class="honeymoon-total" id="hm1Total">0 €</div>
+                    <p class="ar-blessing">بارك الله لكما وبارك عليكما</p>
+                </div>
+            </div>
+
+            <div id="honeymoon2" class="content-section hide-for-yousra">
+                <h2 class="section-title">Deuxième Voyage de Noces</h2>
+                <p class="section-subtitle">Planification détaillée de votre deuxième destination</p>
+                <div class="card">
+                    <div class="grid-3">
+                        <div class="input-group">
+                            <label>Destination</label>
+                            <input type="text" id="hm2Destination" placeholder="Marrakech, Maroc" onchange="saveData('Voyage 2 - Destination')">
+                        </div>
+                        <div class="input-group">
+                            <label>Date de Départ</label>
+                            <input type="date" id="hm2StartDate" onchange="saveData('Voyage 2 - Date')">
+                        </div>
+                        <div class="input-group">
+                            <label>Durée (jours)</label>
+                            <input type="number" id="hm2Duration" placeholder="7" onchange="saveData('Voyage 2 - Durée')">
+                        </div>
+                    </div>
+                    <h3>Budget Détaillé</h3>
+                    <div id="hm2BudgetCategories"></div>
+                    <h3>Notes & Idées</h3>
+                    <div class="input-group">
+                        <textarea id="hm2Notes" placeholder="Activités prévues, restaurants à essayer, lieux à visiter..." onchange="saveData('Voyage 2 - Notes')"></textarea>
+                    </div>
+                </div>
+                <div class="honeymoon-summary">
+                    <h3>Budget Total Voyage 2</h3>
+                    <div class="honeymoon-total" id="hm2Total">0 €</div>
+                    <p class="ar-blessing">وجمع بينكما في خير</p>
+                </div>
+            </div>
+
+            <div id="inspiration" class="content-section">
+                <h2 class="section-title">Inspiration</h2>
+                <p class="section-subtitle">Vos idées et coups de cœur</p>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Thème & Ambiance</h3>
+                        <textarea id="themeIdeas" placeholder="Style, atmosphère..." onchange="saveData('Inspiration - Thème')"></textarea>
+                    </div>
+                    <div class="card">
+                        <h3>Couleurs</h3>
+                        <textarea id="colorIdeas" placeholder="Palette de couleurs..." onchange="saveData('Inspiration - Couleurs')"></textarea>
+                    </div>
+                    <div class="card">
+                        <h3>Fleurs</h3>
+                        <textarea id="flowerIdeas" placeholder="Types de fleurs..." onchange="saveData('Inspiration - Fleurs')"></textarea>
+                    </div>
+                    <div class="card">
+                        <h3>Décoration</h3>
+                        <textarea id="decoIdeas" placeholder="Éléments décoratifs..." onchange="saveData('Inspiration - Déco')"></textarea>
+                    </div>
+                    <div class="card">
+                        <h3>Menu Halal</h3>
+                        <textarea id="menuIdeas" placeholder="Plats, pâtisseries..." onchange="saveData('Inspiration - Menu')"></textarea>
+                    </div>
+                    <div class="card">
+                        <h3>Animation</h3>
+                        <textarea id="animationIdeas" placeholder="Musique, traditions..." onchange="saveData('Inspiration - Animation')"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="discussions" class="content-section">
+                <h2 class="section-title">Discussions Admins</h2>
+                <p class="section-subtitle">Espace d'échange entre administrateurs</p>
+                <div class="card">
+                    <div class="chat-container" id="chatContainer"></div>
+                    <div class="chat-input-area">
+                        <textarea id="chatInput" placeholder="Votre message..."></textarea>
+                        <button class="btn" onclick="sendMessage()">Envoyer le Message</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="logs" class="content-section master-only">
+                <h2 class="section-title">Historique des Modifications</h2>
+                <p class="section-subtitle">Toutes les actions effectuées par les administrateurs</p>
+                <div class="card">
+                    <div class="logs-container" id="logsContainer">
+                        <p style="text-align: center; color: var(--slate); padding: 3rem;">Aucune modification enregistrée</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_CODES = {
+            '1111': 'Admin Salma',
+            '2222': 'Admin Yousra',
+            '3334': 'Directeur Chouaib'
+        };
+        const MASTER_CODE = '3334';
+        let currentAdmin = '';
+        let currentAdminCode = '';
+
+        let weddingData = {
+            weddingDate: '2026-09-04',
+            ceremonyVenue: '',
+            receptionVenue: '',
+            estimatedGuests: '',
+            totalBudget: 0,
+            expenses: [],
+            expenseComments: [],
+            customCategories: [],
+            guests: [],
+            honeymoon1: { destination: '', startDate: '', duration: '', expenses: [], expenseComments: [], notes: '' },
+            honeymoon2: { destination: '', startDate: '', duration: '', expenses: [], expenseComments: [], notes: '' },
+            checklist: {
+                admin: ['Réserver mairie/mosquée', 'Établir contrat Mahr', 'Dossier mariage', 'Publication bans', 'Assurance'],
+                venues: ['Lieu cérémonie', 'Lieu réception', 'Traiteur Halal', 'Photographe', 'Vidéaste', 'Animation', 'Fleuriste'],
+                outfits: ['Tenue mariée', 'Retouches', 'Tenue marié', 'Chaussures', 'Accessoires', 'Tenues témoins', 'Alliances'],
+                comm: ['Site mariage', 'Save-the-date', 'Faire-parts commande', 'Faire-parts envoi', 'Liste mariage', 'Relances'],
+                deco: ['Thème', 'Fleurs', 'Décoration salle', 'Gâteau Halal', 'Cadeaux invités', 'Plan de table', 'Livret cérémonie'],
+                final: ['Coiffeur/maquilleur', 'Fêtes célibat', 'Répétition', 'Confirmer prestataires', 'Discours', 'Voyages', 'Douas']
+            },
+            checklistStatus: {},
+            inspiration: {},
+            logs: [],
+            messages: []
+        };
+
+        const budgetCategories = [
+            'Lieu & Traiteur', 'Tenues', 'Photo & Vidéo', 'Fleurs & Décoration',
+            'Animation', 'Papeterie', 'Alliances', 'Gâteau', 'Transport',
+            'Cadeaux Invités', 'Mahr (Dot)', 'Divers'
+        ];
+
+        const honeymoonCategories = ['Vols', 'Hébergement', 'Transport Local', 'Restaurants', 'Activités', 'Shopping'];
+
+        function addLog(action) {
+            const log = {
+                admin: currentAdmin,
+                action: action + ' par ' + currentAdmin,
+                timestamp: new Date().toLocaleString('fr-FR')
+            };
+            weddingData.logs.unshift(log);
+            if (weddingData.logs.length > 100) weddingData.logs.pop();
+            renderLogs();
+        }
+
+        function renderLogs() {
+            const container = document.getElementById('logsContainer');
+            if (!container) return;
+            if (weddingData.logs.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--slate); padding: 3rem;">Aucune modification enregistrée</p>';
+                return;
+            }
+            container.innerHTML = '';
+            weddingData.logs.forEach(log => {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                div.innerHTML = `
+                    <div class="log-header">
+                        <span class="log-admin">${log.admin}</span>
+                        <span class="log-time">${log.timestamp}</span>
+                    </div>
+                    <div class="log-action">${log.action}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderBudgetCategories() {
+            const container = document.getElementById('mainBudgetCategories');
+            container.innerHTML = '';
+            budgetCategories.forEach((cat, index) => {
+                const div = document.createElement('div');
+                div.className = 'budget-category-item';
+                div.innerHTML = `
+                    <div class="input-group">
+                        <label>${cat}</label>
+                        <input type="number" class="budget-expense" placeholder="0 €" value="${weddingData.expenses[index] || ''}" 
+                               onchange="saveData('Budget - ${cat}'); updateBudget()">
+                    </div>
+                    <div class="input-group">
+                        <label>Note (prestataire, lien, instagram...)</label>
+                        <input type="text" class="budget-comment" placeholder="Ex: @traiteur_paris, 06 12 34 56 78" 
+                               value="${weddingData.expenseComments[index] || ''}"
+                               onchange="saveData('Budget note - ${cat}')">
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderHoneymoonBudget(hmNumber) {
+            const container = document.getElementById(`hm${hmNumber}BudgetCategories`);
+            const hm = weddingData[`honeymoon${hmNumber}`];
+            container.innerHTML = '';
+            honeymoonCategories.forEach((cat, index) => {
+                const div = document.createElement('div');
+                div.className = 'budget-category-item';
+                div.innerHTML = `
+                    <div class="input-group">
+                        <label>${cat}</label>
+                        <input type="number" class="hm${hmNumber}-expense" placeholder="0 €" value="${hm.expenses[index] || ''}"
+                               onchange="saveData('Voyage ${hmNumber} - ${cat}'); updateHoneymoon${hmNumber}()">
+                    </div>
+                    <div class="input-group">
+                        <label>Note (compagnie, réservation, lien...)</label>
+                        <input type="text" class="hm${hmNumber}-comment" placeholder="Ex: Air France, booking.com, ref: ABC123" 
+                               value="${hm.expenseComments[index] || ''}"
+                               onchange="saveData('Voyage ${hmNumber} note - ${cat}')">
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('weddingPlannerChouaibSalma');
+            if (saved) {
+                weddingData = JSON.parse(saved);
+            }
+            document.getElementById('ceremonyVenue').value = weddingData.ceremonyVenue || '';
+            document.getElementById('receptionVenue').value = weddingData.receptionVenue || '';
+            document.getElementById('estimatedGuests').value = weddingData.estimatedGuests || '';
+            document.getElementById('totalBudget').value = weddingData.totalBudget || '';
+            renderBudgetCategories();
+            document.getElementById('hm1Destination').value = weddingData.honeymoon1.destination || '';
+            document.getElementById('hm1StartDate').value = weddingData.honeymoon1.startDate || '';
+            document.getElementById('hm1Duration').value = weddingData.honeymoon1.duration || '';
+            document.getElementById('hm1Notes').value = weddingData.honeymoon1.notes || '';
+            renderHoneymoonBudget(1);
+            document.getElementById('hm2Destination').value = weddingData.honeymoon2.destination || '';
+            document.getElementById('hm2StartDate').value = weddingData.honeymoon2.startDate || '';
+            document.getElementById('hm2Duration').value = weddingData.honeymoon2.duration || '';
+            document.getElementById('hm2Notes').value = weddingData.honeymoon2.notes || '';
+            renderHoneymoonBudget(2);
+            document.getElementById('themeIdeas').value = weddingData.inspiration.theme || '';
+            document.getElementById('colorIdeas').value = weddingData.inspiration.colors || '';
+            document.getElementById('flowerIdeas').value = weddingData.inspiration.flowers || '';
+            document.getElementById('decoIdeas').value = weddingData.inspiration.deco || '';
+            document.getElementById('menuIdeas').value = weddingData.inspiration.menu || '';
+            document.getElementById('animationIdeas').value = weddingData.inspiration.animation || '';
+            document.getElementById('guestCeremonyVenue').textContent = weddingData.ceremonyVenue || 'À venir';
+            document.getElementById('guestReceptionVenue').textContent = weddingData.receptionVenue || 'À venir';
+            renderCustomCategories();
+            renderChecklist();
+            renderGuests();
+            renderLogs();
+            renderMessages();
+            updateBudget();
+            updateHoneymoon1();
+            updateHoneymoon2();
+            updateStats();
+            updateDaysLeft();
+        }
+
+        function saveData(action) {
+            weddingData.ceremonyVenue = document.getElementById('ceremonyVenue').value;
+            weddingData.receptionVenue = document.getElementById('receptionVenue').value;
+            weddingData.estimatedGuests = document.getElementById('estimatedGuests').value;
+            weddingData.totalBudget = parseFloat(document.getElementById('totalBudget').value) || 0;
+            const expenseInputs = document.querySelectorAll('.budget-expense');
+            weddingData.expenses = Array.from(expenseInputs).map(input => parseFloat(input.value) || 0);
+            const commentInputs = document.querySelectorAll('.budget-comment');
+            weddingData.expenseComments = Array.from(commentInputs).map(input => input.value || '');
+            weddingData.honeymoon1.destination = document.getElementById('hm1Destination').value;
+            weddingData.honeymoon1.startDate = document.getElementById('hm1StartDate').value;
+            weddingData.honeymoon1.duration = document.getElementById('hm1Duration').value;
+            weddingData.honeymoon1.notes = document.getElementById('hm1Notes').value;
+            weddingData.honeymoon1.expenses = Array.from(document.querySelectorAll('.hm1-expense')).map(i => parseFloat(i.value) || 0);
+            weddingData.honeymoon1.expenseComments = Array.from(document.querySelectorAll('.hm1-comment')).map(i => i.value || '');
+            weddingData.honeymoon2.destination = document.getElementById('hm2Destination').value;
+            weddingData.honeymoon2.startDate = document.getElementById('hm2StartDate').value;
+            weddingData.honeymoon2.duration = document.getElementById('hm2Duration').value;
+            weddingData.honeymoon2.notes = document.getElementById('hm2Notes').value;
+            weddingData.honeymoon2.expenses = Array.from(document.querySelectorAll('.hm2-expense')).map(i => parseFloat(i.value) || 0);
+            weddingData.honeymoon2.expenseComments = Array.from(document.querySelectorAll('.hm2-comment')).map(i => i.value || '');
+            weddingData.inspiration = {
+                theme: document.getElementById('themeIdeas').value,
+                colors: document.getElementById('colorIdeas').value,
+                flowers: document.getElementById('flowerIdeas').value,
+                deco: document.getElementById('decoIdeas').value,
+                menu: document.getElementById('menuIdeas').value,
+                animation: document.getElementById('animationIdeas').value
+            };
+            localStorage.setItem('weddingPlannerChouaibSalma', JSON.stringify(weddingData));
+            document.getElementById('guestCeremonyVenue').textContent = weddingData.ceremonyVenue || 'À venir';
+            document.getElementById('guestReceptionVenue').textContent = weddingData.receptionVenue || 'À venir';
+            if (action) addLog(action);
+            updateStats();
+        }
+
+        function loginAdmin() {
+            const code = document.getElementById('adminCode').value;
+            if (ADMIN_CODES[code]) {
+                currentAdmin = ADMIN_CODES[code];
+                currentAdminCode = code;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminView').style.display = 'block';
+                document.getElementById('adminBadge').textContent = currentAdmin;
+                if (code === MASTER_CODE) {
+                    document.querySelectorAll('.master-only').forEach(el => el.style.display = 'block');
+                }
+                if (code === '2222') {
+                    document.querySelectorAll('.hide-for-yousra').forEach(el => el.style.display = 'none');
+                }
+                loadData();
+                addLog('Connexion admin');
+            } else {
+                alert('Code incorrect');
+                document.getElementById('adminCode').value = '';
+            }
+        }
+
+        function viewAsGuest() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('guestView').style.display = 'block';
+            loadData();
+        }
+
+        function logout() {
+            addLog('Déconnexion admin');
+            localStorage.setItem('weddingPlannerChouaibSalma', JSON.stringify(weddingData));
+            currentAdmin = '';
+            currentAdminCode = '';
+            document.getElementById('adminView').style.display = 'none';
+            document.getElementById('guestView').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('adminCode').value = '';
+            document.querySelectorAll('.master-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.hide-for-yousra').forEach(el => el.style.display = 'block');
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            if (tabName === 'budget') {
+                showBudgetWidget();
+                updateBudgetWidget();
+            } else {
+                closeBudgetWidget();
+            }
+        }
+
+        function showBudgetWidget() {
+            document.getElementById('budgetWidget').classList.add('active');
+        }
+
+        function closeBudgetWidget() {
+            document.getElementById('budgetWidget').classList.remove('active');
+        }
+
+        function updateBudgetWidget() {
+            let total = 0;
+            document.querySelectorAll('.budget-expense').forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+            weddingData.customCategories.forEach(cat => {
+                total += parseFloat(cat.amount) || 0;
+            });
+            document.getElementById('widgetTotal').textContent = total.toLocaleString('fr-FR') + ' €';
+        }
+
+        function updateBudget() {
+            let total = 0;
+            document.querySelectorAll('.budget-expense').forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+            weddingData.customCategories.forEach(cat => {
+                total += parseFloat(cat.amount) || 0;
+            });
+            const totalBudget = parseFloat(document.getElementById('totalBudget').value) || 0;
+            const remaining = totalBudget - total;
+            const percentage = totalBudget > 0 ? (total / totalBudget * 100) : 0;
+            document.getElementById('totalSpent').textContent = total.toLocaleString('fr-FR') + ' €';
+            document.getElementById('remaining').textContent = remaining.toLocaleString('fr-FR') + ' €';
+            document.getElementById('budgetProgress').style.width = Math.min(percentage, 100) + '%';
+            document.getElementById('budgetSpent').textContent = total.toLocaleString('fr-FR') + '€';
+            updateBudgetWidget();
+        }
+
+        function updateHoneymoon1() {
+            let total = 0;
+            document.querySelectorAll('.hm1-expense').forEach(i => total += parseFloat(i.value) || 0);
+            document.getElementById('hm1Total').textContent = total.toLocaleString('fr-FR') + ' €';
+        }
+
+        function updateHoneymoon2() {
+            let total = 0;
+            document.querySelectorAll('.hm2-expense').forEach(i => total += parseFloat(i.value) || 0);
+            document.getElementById('hm2Total').textContent = total.toLocaleString('fr-FR') + ' €';
+        }
+
+        function addCustomCategory() {
+            weddingData.customCategories.push({ name: '', amount: 0, comment: '' });
+            renderCustomCategories();
+            saveData('Catégorie budget ajoutée');
+        }
+
+        function renderCustomCategories() {
+            const container = document.getElementById('customCategories');
+            container.innerHTML = '';
+            weddingData.customCategories.forEach((cat, index) => {
+                const div = document.createElement('div');
+                div.className = 'custom-category';
+                div.innerHTML = `
+                    <div class="input-group">
+                        <label>Nom Catégorie</label>
+                        <input type="text" value="${cat.name || ''}" onchange="updateCustomCategory(${index}, 'name', this.value)" placeholder="Ex: Drone">
+                    </div>
+                    <div class="input-group">
+                        <label>Montant</label>
+                        <input type="number" value="${cat.amount || ''}" onchange="updateCustomCategory(${index}, 'amount', this.value)" placeholder="0 €">
+                    </div>
+                    <div class="input-group">
+                        <label>Note</label>
+                        <input type="text" value="${cat.comment || ''}" onchange="updateCustomCategory(${index}, 'comment', this.value)" placeholder="Prestataire, contact...">
+                    </div>
+                    <button class="delete-btn" onclick="removeCustomCategory(${index})">Supprimer</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateCustomCategory(index, field, value) {
+            weddingData.customCategories[index][field] = value;
+            saveData(`Budget - ${weddingData.customCategories[index].name || 'Catégorie custom'}`);
+            updateBudget();
+        }
+
+        function removeCustomCategory(index) {
+            if (confirm('Supprimer cette catégorie ?')) {
+                const name = weddingData.customCategories[index].name || 'Catégorie';
+                weddingData.customCategories.splice(index, 1);
+                renderCustomCategories();
+                saveData(`Catégorie supprimée: ${name}`);
+                updateBudget();
+            }
+        }
+
+        function renderChecklist() {
+            const categories = {
+                checklistAdmin: 'admin',
+                checklistVenues: 'venues',
+                checklistOutfits: 'outfits',
+                checklistComm: 'comm',
+                checklistDeco: 'deco',
+                checklistFinal: 'final'
+            };
+            Object.entries(categories).forEach(([elemId, category]) => {
+                const container = document.getElementById(elemId);
+                container.innerHTML = '';
+                weddingData.checklist[category].forEach((task, index) => {
+                    const key = `${category}-${index}`;
+                    const isChecked = weddingData.checklistStatus[key] || false;
+                    const div = document.createElement('div');
+                    div.className = 'checklist-item' + (isChecked ? ' completed' : '');
+                    div.innerHTML = `
+                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTask('${key}', '${task}', this)">
+                        <span>${task}</span>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+            updateProgress();
+        }
+
+        function toggleTask(key, taskName, checkbox) {
+            weddingData.checklistStatus[key] = checkbox.checked;
+            checkbox.parentElement.classList.toggle('completed', checkbox.checked);
+            saveData(`Checklist: ${taskName} ${checkbox.checked ? 'cochée' : 'décochée'}`);
+            updateProgress();
+        }
+
+        function addCustomTask(category) {
+            const inputId = 'newTask' + category.charAt(0).toUpperCase() + category.slice(1);
+            const taskText = document.getElementById(inputId).value.trim();
+            if (!taskText) {
+                alert('Veuillez entrer une tâche');
+                return;
+            }
+            weddingData.checklist[category].push(taskText);
+            document.getElementById(inputId).value = '';
+            renderChecklist();
+            saveData('Tâche ajoutée: ' + taskText);
+        }
+
+        function updateProgress() {
+            const totalTasks = Object.values(weddingData.checklist).reduce((sum, cat) => sum + cat.length, 0);
+            const completedTasks = Object.values(weddingData.checklistStatus).filter(v => v).length;
+            const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            document.getElementById('taskProgress').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        function addGuestFromForm() {
+            const name = document.getElementById('newGuestName').value;
+            if (!name) {
+                alert('Veuillez entrer au moins le nom');
+                return;
+            }
+            weddingData.guests.push({
+                name: name,
+                side: document.getElementById('newGuestSide').value,
+                email: document.getElementById('newGuestEmail').value,
+                phone: document.getElementById('newGuestPhone').value,
+                confirmed: document.getElementById('newGuestConfirmed').value,
+                menu: document.getElementById('newGuestMenu').value
+            });
+            document.getElementById('newGuestName').value = '';
+            document.getElementById('newGuestEmail').value = '';
+            document.getElementById('newGuestPhone').value = '';
+            renderGuests();
+            saveData(`Invité ajouté: ${name}`);
+        }
+
+        function renderGuests() {
+            const tbody = document.getElementById('guestList');
+            tbody.innerHTML = '';
+            weddingData.guests.forEach((guest, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="text" value="${guest.name || ''}" onchange="updateGuest(${index}, 'name', this.value, '${guest.name}')"></td>
+                    <td>
+                        <select onchange="updateGuest(${index}, 'side', this.value, '${guest.name}')">
+                            <option value="Famille Chouaib" ${guest.side === 'Famille Chouaib' ? 'selected' : ''}>Chouaib</option>
+                            <option value="Famille Salma" ${guest.side === 'Famille Salma' ? 'selected' : ''}>Salma</option>
+                        </select>
+                    </td>
+                    <td><input type="email" value="${guest.email || ''}" onchange="updateGuest(${index}, 'email', this.value, '${guest.name}')"></td>
+                    <td><input type="tel" value="${guest.phone || ''}" onchange="updateGuest(${index}, 'phone', this.value, '${guest.name}')"></td>
+                    <td>
+                        <select onchange="updateGuest(${index}, 'confirmed', this.value, '${guest.name}')">
+                            <option value="En attente" ${guest.confirmed === 'En attente' ? 'selected' : ''}>En attente</option>
+                            <option value="Confirmé" ${guest.confirmed === 'Confirmé' ? 'selected' : ''}>Confirmé</option>
+                            <option value="Décliné" ${guest.confirmed === 'Décliné' ? 'selected' : ''}>Décliné</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select onchange="updateGuest(${index}, 'menu', this.value, '${guest.name}')">
+                            <option value="Halal" ${guest.menu === 'Halal' ? 'selected' : ''}>Halal</option>
+                            <option value="Végétarien" ${guest.menu === 'Végétarien' ? 'selected' : ''}>Végétarien</option>
+                            <option value="Sans gluten" ${guest.menu === 'Sans gluten' ? 'selected' : ''}>Sans gluten</option>
+                            <option value="Autre" ${guest.menu === 'Autre' ? 'selected' : ''}>Autre</option>
+                        </select>
+                    </td>
+                    <td><button class="delete-btn" onclick="deleteGuest(${index}, '${guest.name}')">Suppr.</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            updateGuestStats();
+        }
+
+        function updateGuest(index, field, value, guestName) {
+            weddingData.guests[index][field] = value;
+            saveData(`Invité modifié: ${guestName} - ${field}`);
+            updateGuestStats();
+        }
+
+        function deleteGuest(index, guestName) {
+            if (confirm('Supprimer cet invité ?')) {
+                weddingData.guests.splice(index, 1);
+                renderGuests();
+                saveData(`Invité supprimé: ${guestName}`);
+            }
+        }
+
+        function updateGuestStats() {
+            const total = weddingData.guests.length;
+            const confirmed = weddingData.guests.filter(g => g.confirmed === 'Confirmé').length;
+            const pending = weddingData.guests.filter(g => g.confirmed === 'En attente').length;
+            document.getElementById('totalGuests').textContent = total;
+            document.getElementById('confirmedGuests').textContent = confirmed;
+            document.getElementById('pendingGuests').textContent = pending;
+            document.getElementById('guestCount').textContent = total;
+        }
+
+        function updateDaysLeft() {
+            const today = new Date();
+            const wedding = new Date(weddingData.weddingDate);
+            const diffTime = wedding - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('daysLeft').textContent = diffDays > 0 ? diffDays : '0';
+        }
+
+        function updateStats() {
+            updateBudget();
+            updateGuestStats();
+            updateProgress();
+            updateDaysLeft();
+            updateHoneymoon1();
+            updateHoneymoon2();
+        }
+
+        function sendMessage() {
+            const text = document.getElementById('chatInput').value.trim();
+            if (!text) {
+                alert('Veuillez entrer un message');
+                return;
+            }
+            const message = {
+                author: currentAdmin,
+                text: text,
+                timestamp: new Date().toLocaleString('fr-FR'),
+                isOwn: true
+            };
+            weddingData.messages.push(message);
+            document.getElementById('chatInput').value = '';
+            renderMessages();
+            saveData('Message envoyé');
+        }
+
+        function renderMessages() {
+            const container = document.getElementById('chatContainer');
+            container.innerHTML = '';
+            if (weddingData.messages.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--slate); padding: 3rem;">Aucun message pour le moment</p>';
+                return;
+            }
+            weddingData.messages.forEach(msg => {
+                const div = document.createElement('div');
+                const isOwn = msg.author === currentAdmin;
+                div.className = 'chat-message' + (isOwn ? ' own' : '');
+                div.innerHTML = `
+                    <div class="chat-header">
+                        <span class="chat-author">${msg.author}</span>
+                        <span class="chat-time">${msg.timestamp}</span>
+                    </div>
+                    <div class="chat-text">${msg.text}</div>
+                `;
+                container.appendChild(div);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        window.onload = function() {
+            loadData();
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('adminCode')?.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') loginAdmin();
+            });
+        });
+    </script>
+</body>
+</html>
